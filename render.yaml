@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: tp-docker-backend
+    env: node
+    plan: free
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DB_HOST
+        fromDatabase:
+          name: tp-docker-db
+          property: host
+      - key: DB_NAME
+        fromDatabase:
+          name: tp-docker-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: tp-docker-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: tp-docker-db
+          property: password
+      - key: DB_PORT
+        value: 5432
+
+databases:
+  - name: tp-docker-db
+    plan: free
+    databaseName: mydb
+    user: postgres
